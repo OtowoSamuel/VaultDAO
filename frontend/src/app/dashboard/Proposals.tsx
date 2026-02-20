@@ -13,7 +13,7 @@ interface Proposal {
     amount: string;
     token: string;
     memo: string;
-    status: 'Pending' | 'Approved' | 'Executed' | 'Rejected' | 'Expired';
+    status: ProposalStatus;
     approvals: number;
     threshold: number;
     createdAt: string;
