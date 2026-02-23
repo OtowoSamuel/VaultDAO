@@ -43,11 +43,11 @@ const RoleManagement: React.FC = () => {
 
   const loadData = async () => {
     try {
-      const role = await getUserRole();
+      const role = await getUserRole?.() || 0;
       setCurrentUserRole(role);
       
       if (role === 2) {
-        const roles = await getAllRoles();
+        const roles = await getAllRoles?.() || [];
         setRoleAssignments(roles);
       }
     } catch (error) {
@@ -105,10 +105,10 @@ const RoleManagement: React.FC = () => {
       if (!address) return;
 
       if (type === 'revoke') {
-        await setRole(address, 0);
+        await setRole?.(address, 0);
         showToast('Role revoked successfully', 'success');
       } else {
-        await setRole(address, newRole ?? 0);
+        await setRole?.(address, newRole ?? 0);
         showToast(`Role ${type === 'assign' ? 'assigned' : 'changed'} successfully`, 'success');
       }
 

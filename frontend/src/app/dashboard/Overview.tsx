@@ -55,7 +55,7 @@ const Overview: React.FC = () => {
         setBalanceLoading(true);
         setBalanceError(null);
         try {
-            const balanceInStroops = await getVaultBalance();
+            const balanceInStroops = await getVaultBalance?.() || '0';
             setBalance(balanceInStroops);
             setLastUpdated(new Date());
         } catch (error) {
@@ -96,7 +96,7 @@ const Overview: React.FC = () => {
     const fetchTokenBalances = useCallback(async () => {
         setIsLoadingBalances(true);
         try {
-            const balances = await getTokenBalances();
+            const balances = await getTokenBalances?.() || [];
             const tokenBalancesWithLoading: TokenBalance[] = balances.map(b => ({
                 ...b,
                 isLoading: false,
@@ -104,7 +104,7 @@ const Overview: React.FC = () => {
             setTokenBalances(tokenBalancesWithLoading);
 
             // Fetch portfolio value
-            const portfolio = await getPortfolioValue();
+            const portfolio = await getPortfolioValue?.() || { total: 0, change24h: 0 };
             setPortfolioValue(portfolio);
         } catch (error) {
             console.error('Failed to fetch token balances', error);
@@ -139,7 +139,7 @@ const Overview: React.FC = () => {
         setAddError(null);
 
         try {
-            const tokenInfo = await addCustomToken(newTokenAddress.trim());
+            const tokenInfo = await addCustomToken?.(newTokenAddress.trim());
             if (tokenInfo) {
                 // Add to local state
                 setTokenBalances(prev => [...prev, {

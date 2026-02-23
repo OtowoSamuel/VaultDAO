@@ -54,8 +54,8 @@ export interface Proposal {
 
 const Proposals: React.FC = () => {
   const { notify } = useToast();
-  const { rejectProposal, getTokenBalances, addCustomToken } = useVaultContract();
-  useWallet();
+  const { rejectProposal, getTokenBalances, addCustomToken, approveProposal } = useVaultContract();
+  const { address } = useWallet();
 
   const [proposals, setProposals] = useState<Proposal[]>([]);
   const [loading, setLoading] = useState(false);
@@ -86,7 +86,7 @@ const Proposals: React.FC = () => {
   useEffect(() => {
     const fetchBalances = async () => {
       try {
-        const balances = await getTokenBalances();
+        const balances = await getTokenBalances?.() || [];
         setTokenBalances(balances.map(b => ({ ...b, isLoading: false })));
       } catch (error) {
         console.error('Failed to fetch token balances:', error);
@@ -144,6 +144,7 @@ const Proposals: React.FC = () => {
             status: 'Approved',
             approvals: 3,
             threshold: 3,
+            approvedBy: ['0x789...012', '0xaaa...bbb', '0xccc...ddd'],
             createdAt: new Date(Date.now() - 86400000).toISOString()
           },
           {
@@ -156,6 +157,7 @@ const Proposals: React.FC = () => {
             memo: 'Community Rewards Distribution',
             status: 'Executed',
             approvals: 3,
+            approvedBy: ['0x345...678', '0xaaa...bbb', '0xccc...ddd'],
             threshold: 3,
             createdAt: new Date(Date.now() - 172800000).toISOString()
           }
@@ -262,6 +264,9 @@ const Proposals: React.FC = () => {
         newSet.delete(proposalId);
         return newSet;
       });
+    }
+  };
+
   const handleTokenSelect = (token: TokenInfo) => {
     setNewProposalForm(prev => ({ ...prev, token: token.address }));
     setSelectedToken(token);
@@ -304,13 +309,13 @@ const Proposals: React.FC = () => {
 
   const handleAddCustomToken = async (address: string): Promise<TokenInfo | null> => {
     try {
-      const tokenInfo = await addCustomToken(address);
+      const tokenInfo = await addCustomToken?.(address);
       if (tokenInfo) {
         // Refresh token balances
-        const balances = await getTokenBalances();
+        const balances = await getTokenBalances?.() || [];
         setTokenBalances(balances.map(b => ({ ...b, isLoading: false })));
       }
-      return tokenInfo;
+      return tokenInfo ?? null;
     } catch (error) {
       console.error('Failed to add custom token:', error);
       throw error;

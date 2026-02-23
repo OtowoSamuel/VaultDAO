@@ -634,28 +634,10 @@ export const useVaultContract = () => {
         }
     };
 
-<<<<<<< main
-    const getProposalSignatures = async (_proposalId: number) => {
-        // Mock implementation
-        return [];
-    };
-
-    const remindSigner = async (address: string) => {
-        // Mock implementation
-        console.log('Remind signer:', address);
-    };
-
-    const exportSignatures = (signers: unknown[]) => {
-        // Mock implementation
-        console.log('Export signatures:', signers);
-    };
-
-    return { proposeTransfer, rejectProposal, executeProposal, getDashboardStats, getVaultEvents, getAllRoles, setRole, getUserRole, getVaultBalance, getProposalSignatures, remindSigner, exportSignatures, loading };
-=======
     // Stub functions for incomplete features
     const getRecurringPayments = async () => [];
     const getRecurringPaymentHistory = async (_paymentId: string) => [];
-    const schedulePayment = async (_params: CreateRecurringPaymentParams) => { throw new Error('Not implemented'); };
+    const schedulePayment = async (_params: unknown) => { throw new Error('Not implemented'); };
     const executeRecurringPayment = async (_paymentId: string) => { throw new Error('Not implemented'); };
     const cancelRecurringPayment = async (_paymentId: string) => { throw new Error('Not implemented'); };
     const getProposalSignatures = async (_proposalId: number) => [];
@@ -677,6 +659,7 @@ export const useVaultContract = () => {
         getTokenInfo,
         addCustomToken,
         getPortfolioValue,
+        approveProposal,
         getRecurringPayments,
         getRecurringPaymentHistory,
         schedulePayment,
@@ -687,5 +670,4 @@ export const useVaultContract = () => {
         exportSignatures,
         loading 
     };
->>>>>>> main
 };

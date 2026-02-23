@@ -31,7 +31,7 @@ const ProposalDetailModal: React.FC<ProposalDetailModalProps> = ({ isOpen, onClo
     
     useEffect(() => {
         if (isOpen && proposal) {
-            getProposalSignatures(parseInt(proposal.id)).then(setSigners);
+            getProposalSignatures?.(parseInt(proposal.id)).then(setSigners);
         }
     }, [isOpen, proposal, getProposalSignatures]);
     
@@ -54,16 +54,16 @@ const ProposalDetailModal: React.FC<ProposalDetailModalProps> = ({ isOpen, onClo
 
     const handleRemind = async (address: string) => {
         if (!proposal) return;
-        await remindSigner(parseInt(proposal.id), address);
+        await remindSigner?.(parseInt(proposal.id), address);
     };
 
     const handleExport = () => {
         if (!proposal) return;
-        exportSignatures(parseInt(proposal.id));
+        exportSignatures?.(parseInt(proposal.id));
     };
 
     const handleRefreshSignatures = async () => {
-        const updated = await getProposalSignatures(parseInt(proposal.id));
+        const updated = await getProposalSignatures?.(parseInt(proposal.id)) ?? [];
         setSigners(updated);
     };
 
