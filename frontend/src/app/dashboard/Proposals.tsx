@@ -105,29 +105,6 @@ const Proposals: React.FC = () => {
     };
     fetchBalances();
   }, [getTokenBalances]);
-||||||| 11ca179
-  // const [selectedToken, setSelectedToken] = useState<TokenInfo | null>(null);
-
-  // Fetch token balances
-  useEffect(() => {
-    const fetchBalances = async () => {
-      try {
-        const balances = await getTokenBalances();
-        setTokenBalances(balances.map((b: TokenBalance) => ({ ...b, isLoading: false })));
-      } catch (error) {
-        console.error('Failed to fetch token balances:', error);
-        // Set default tokens with zero balances
-        setTokenBalances(DEFAULT_TOKENS.map(token => ({
-          token,
-          balance: '0',
-          isLoading: false,
-        })));
-      }
-    };
-    fetchBalances();
-  }, [getTokenBalances]);
-=======
->>>>>>> main
 
   useEffect(() => {
     const fetchProposals = async () => {

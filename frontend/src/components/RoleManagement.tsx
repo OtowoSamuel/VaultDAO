@@ -22,7 +22,7 @@ const ROLE_PERMISSIONS = {
 };
 
 const RoleManagement: React.FC = () => {
-  const { getAllRoles, setRole, getUserRole, loading } = useVaultContract();
+  const { getAllRoles, getUserRole, assignRole, loading } = useVaultContract();
   const { notify } = useToast();
   const [currentUserRole, setCurrentUserRole] = useState<number>(0);
   const [roleAssignments, setRoleAssignments] = useState<RoleAssignment[]>([]);
