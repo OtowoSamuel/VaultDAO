@@ -4,6 +4,7 @@
 //! proposal workflows, spending limits, reputation, insurance, and batch execution.
 
 #![no_std]
+#![allow(clippy::too_many_arguments)]
 
 mod errors;
 mod events;
@@ -17,7 +18,7 @@ pub use types::InitConfig;
 use errors::VaultError;
 use soroban_sdk::{contract, contractimpl, Address, Env, String, Symbol, Vec};
 use types::{
-    AmountTier, Comment, Condition, ConditionLogic, Config, InsuranceConfig, ListMode,
+    Comment, Condition, ConditionLogic, Config, InsuranceConfig, ListMode,
     NotificationPreferences, Priority, Proposal, ProposalStatus, Reputation, Role,
     ThresholdStrategy,
 };
@@ -42,6 +43,7 @@ const REP_REJECTION_PENALTY: u32 = 20;
 const REP_APPROVAL_BONUS: u32 = 2;
 
 #[contractimpl]
+#[allow(clippy::too_many_arguments)]
 impl VaultDAO {
     // ========================================================================
     // Initialization
@@ -125,6 +127,7 @@ impl VaultDAO {
     ///
     /// # Returns
     /// The unique ID of the newly created proposal.
+    #[allow(clippy::too_many_arguments)]
     pub fn propose_transfer(
         env: Env,
         proposer: Address,
@@ -1381,13 +1384,8 @@ impl VaultDAO {
         match &config.threshold_strategy {
             ThresholdStrategy::Fixed => config.threshold,
             ThresholdStrategy::Percentage(pct) => {
-                let signers = config.signers.len();
-                let calc = (signers * pct + 99) / 100; // ceil
-                if calc < 1 {
-                    1
-                } else {
-                    calc
-                }
+                let signers = config.signers.len() as u64;
+                (signers * (*pct as u64)).div_ceil(100).max(1) as u32
             }
             ThresholdStrategy::AmountBased(tiers) => {
                 // Find the highest tier whose amount is <= proposal amount
